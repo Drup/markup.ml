@@ -45,7 +45,7 @@ let replace_windows_1252_entity = function
   | c -> c
 
 let named_entity_trie =
-  lazy begin
+  begin
     let trie = Trie.create () in
     Array.fold_left (fun trie (name, characters) ->
       Trie.add name characters trie)
@@ -384,7 +384,7 @@ let tokenize report (input, get_location) =
                 finish (Some (w, m)) (v::(replace @ matched)) [])
         in
         match_named
-          None [] [] (Lazy.force named_entity_trie) (Buffer.create 16))
+          None [] [] named_entity_trie (Buffer.create 16))
 
   (* 8.2.4.1. *)
   and data_state () =
